@@ -13,9 +13,9 @@ spring:
 
   datasource:
     username: postgres
-    password: 2002sep24
+    password: roza2023
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/ELearning
+    url: jdbc:postgresql://localhost:5432/e_learning_dev_db
   jpa:
     show-sql: true
     hibernate:
