@@ -1,11 +1,7 @@
 package co.istad.elearning.features.course;
 
 import co.istad.elearning.domain.Course;
-import co.istad.elearning.features.course.CourseRepository;
-import co.istad.elearning.features.course.CourseService;
-import co.istad.elearning.features.course.dto.CourseCreateRequest;
-import co.istad.elearning.features.course.dto.CourseDetailsResponse;
-import co.istad.elearning.features.course.dto.CourseResponse;
+import co.istad.elearning.features.course.dto.*;
 import co.istad.elearning.mapper.CourseMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -50,4 +46,25 @@ public class CourseServiceImpl implements CourseService {
     public CourseDetailsResponse findByAlias(String alias) {
         return null;
     }
+
+    @Override
+    public CourseResponse updateCourseByAlias(String alias, CourseUpdateRequest courseUpdateRequest) {
+        return null;
+    }
+
+    @Override
+    public CourseResponse updateCourseThumbnailByAlias(String alias, CourseThumbnailRequest courseThumbnailRequest) {
+        return null;
+    }
+
+    @Override
+    public CourseResponse updateCourseCategoryByAlias(String alias, CourseCategoryRequest courseCategoryRequest) {
+        return null;
+    }
+
+    @Override
+    public void disableCourseByAlias(String alias) {
+
+    }
+
 }

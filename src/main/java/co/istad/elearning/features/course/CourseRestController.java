@@ -1,9 +1,7 @@
 package co.istad.elearning.features.course;
 
 import co.istad.elearning.base.BaseResponse;
-import co.istad.elearning.features.course.dto.CourseCreateRequest;
-import co.istad.elearning.features.course.dto.CourseDetailsResponse;
-import co.istad.elearning.features.course.dto.CourseResponse;
+import co.istad.elearning.features.course.dto.*;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 public class CourseRestController {
     private final CourseService courseService;
 
-
     @PostMapping()
     @Operation(summary = "Create new course")
     @ResponseStatus(HttpStatus.CREATED)
@@ -28,7 +25,7 @@ public class CourseRestController {
     @GetMapping
     @Operation(summary = "Find all courses by pagination")
     @ResponseStatus(HttpStatus.OK)
-    Page<CourseResponse> findList(
+    Page<CourseResponse> findAllCourse(
             @RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "25") int size
     ) {
@@ -38,7 +35,40 @@ public class CourseRestController {
     @GetMapping("/{alias}")
     @Operation(summary = "Find a course details")
     @ResponseStatus(HttpStatus.OK)
-    CourseDetailsResponse findByAlias(@PathVariable("alias") String alias) {
+    CourseDetailsResponse findCourseByAlias(@PathVariable("alias") String alias) {
         return courseService.findByAlias(alias);
     }
+
+
+    @PutMapping("{alias}")
+    @Operation(summary = "Update a course")
+    @ResponseStatus(HttpStatus.OK)
+    public CourseResponse updateCourseByAlias(@PathVariable("alias") String alias,
+                                              @RequestBody CourseUpdateRequest courseUpdateRequest) {
+        return courseService.updateCourseByAlias(alias, courseUpdateRequest);
+    }
+
+    @PutMapping("/{alias}/thumbnail")
+    @Operation(summary = "Update a course’s thumbnail")
+    @ResponseStatus(HttpStatus.OK)
+    public CourseResponse updateCourseThumbnailByAlias(@PathVariable("alias") String alias,
+                                                       @RequestBody CourseThumbnailRequest courseThumbnailRequest) {
+        return courseService.updateCourseThumbnailByAlias(alias, courseThumbnailRequest);
+    }
+
+    @PutMapping("/{alias}/categories")
+    @Operation(summary = "Update a course’s categories")
+    @ResponseStatus(HttpStatus.OK)
+    public CourseResponse updateCourseCategoryByAlias(@PathVariable("alias") String alias,
+                                                       @RequestBody CourseCategoryRequest courseCategoryRequest) {
+        return courseService.updateCourseCategoryByAlias(alias, courseCategoryRequest);
+    }
+
+    @PutMapping("{alias}/disable")
+    @Operation(summary = "Update a course’s categories")
+    @ResponseStatus(HttpStatus.OK)
+    public void disableCourseByAlias(@PathVariable("alias") String alias){
+        courseService.disableCourseByAlias(alias);
+    }
+
 }
