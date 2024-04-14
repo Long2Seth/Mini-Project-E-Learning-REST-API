@@ -23,5 +23,7 @@ public class Instructor {
     private String website;
 
     //relationship
-        //user_id
+
+    @ManyToOne
+    private User user;
 }

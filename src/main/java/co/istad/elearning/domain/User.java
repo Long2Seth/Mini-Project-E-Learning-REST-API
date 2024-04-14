@@ -64,6 +64,13 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     private List<Role> roles;
 
+    @OneToMany(mappedBy = "students")
+    private List<Student> students;
+
+    @OneToMany
+    private List<Instructor> instructors;
+
+
 
 
 
