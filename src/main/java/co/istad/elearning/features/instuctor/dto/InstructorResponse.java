@@ -1,6 +1,8 @@
 package co.istad.elearning.features.instuctor.dto;
 
 import co.istad.elearning.features.user.dto.UserDetailResponse;
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 
 public record InstructorResponse(
         String biography,
@@ -16,4 +18,8 @@ public record InstructorResponse(
         UserDetailResponse userDetailResponse
 
 ) {
+    @JsonCreator
+    public InstructorResponse {
+
+    }
 }

@@ -4,12 +4,15 @@ import co.istad.elearning.domain.Instructor;
 import co.istad.elearning.domain.Role;
 import co.istad.elearning.domain.User;
 import co.istad.elearning.features.instuctor.dto.InstructorCreateRequest;
+import co.istad.elearning.features.instuctor.dto.InstructorResponse;
 import co.istad.elearning.features.user.RoleRepository;
 import co.istad.elearning.features.user.UserRepository;
 import co.istad.elearning.features.user.dto.UserCreateRequest;
 import co.istad.elearning.mapper.InstructorMapper;
 import co.istad.elearning.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -97,5 +100,16 @@ public class InstructorServiceImpl implements InstructorService{
 
         instructorRepository.save(instructor);
 
+    }
+
+    @Override
+    public Page<InstructorResponse> findList(int page , int limit) {
+//        List<Instructor> instructors = instructorRepository.findAll();
+//        return instructorMapper.toInstructorResponseList(instructors) ;
+        PageRequest pageRequest = PageRequest.of(page, limit);
+
+        Page<Instructor> instructors = instructorRepository.findAll(pageRequest);
+
+        return instructors.map(instructorMapper::toInstructorResponse);
     }
 }
