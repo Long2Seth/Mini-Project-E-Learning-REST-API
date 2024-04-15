@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -21,9 +22,9 @@ public class User {
 
     private String address2;
 
-    private Timestamp dob;
+    private LocalDate dob;
 
-    @Column(nullable = false)
+    @Column(unique = true,nullable = false)
     private String email;
 
     @Column(length = 50)
@@ -36,9 +37,10 @@ public class User {
     private String givenName;
 
     private Boolean isDeleted;
-    private Boolean isBlocked;
 
-    @Column(length = 30,nullable = false)
+    private Boolean isVerified;
+
+    @Column(length = 30,unique = true,nullable = false)
     private String nationalIdCard;
 
     private String password;
@@ -64,10 +66,10 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     private List<Role> roles;
 
-    @OneToMany(mappedBy = "students")
+    @OneToMany(mappedBy = "user")
     private List<Student> students;
 
-    @OneToMany
+    @OneToMany(mappedBy = "user")
     private List<Instructor> instructors;
 
 
