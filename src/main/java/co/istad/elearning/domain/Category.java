@@ -11,16 +11,17 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(length = 100,nullable = false)
+    @Column(length = 100, nullable = false)
     private String alias;
 
     private String icon;
 
     private Boolean isDeleted;
 
-    @Column(length = 60,nullable = false)
+    @Column(length = 60, nullable = false)
     private String name;
 
-    //relationship
-    private Integer parentCategoryId;
+    @ManyToOne
+    @JoinColumn(name = "parent_category_id")
+    private Category parentCategory;
 }
