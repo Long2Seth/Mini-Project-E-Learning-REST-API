@@ -18,8 +18,5 @@ public record InstructorResponse(
         UserDetailResponse userDetailResponse
 
 ) {
-    @JsonCreator
-    public InstructorResponse {
 
-    }
 }

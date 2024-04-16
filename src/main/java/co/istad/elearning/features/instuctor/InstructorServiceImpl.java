@@ -104,8 +104,7 @@ public class InstructorServiceImpl implements InstructorService{
 
     @Override
     public Page<InstructorResponse> findList(int page , int limit) {
-//        List<Instructor> instructors = instructorRepository.findAll();
-//        return instructorMapper.toInstructorResponseList(instructors) ;
+
         PageRequest pageRequest = PageRequest.of(page, limit);
 
         Page<Instructor> instructors = instructorRepository.findAll(pageRequest);
