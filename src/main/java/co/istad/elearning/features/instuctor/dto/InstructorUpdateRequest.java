@@ -1,4 +1,9 @@
 package co.istad.elearning.features.instuctor.dto;
 
-public record InstructorUpdateRequest() {
+import jakarta.validation.constraints.NotBlank;
+
+public record InstructorUpdateRequest(
+        @NotBlank(message = "Media is required")
+        String mediaName
+) {
 }

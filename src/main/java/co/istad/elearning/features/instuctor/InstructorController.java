@@ -3,7 +3,11 @@ package co.istad.elearning.features.instuctor;
 import co.istad.elearning.features.instuctor.dto.CombinedRequest;
 import co.istad.elearning.features.instuctor.dto.InstructorCreateRequest;
 import co.istad.elearning.features.instuctor.dto.InstructorResponse;
+import co.istad.elearning.features.instuctor.dto.InstructorUpdateRequest;
 import co.istad.elearning.features.user.dto.UserCreateRequest;
+import co.istad.elearning.features.user.dto.UserResponse;
+import co.istad.elearning.util.BaseResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,18 +28,32 @@ public class InstructorController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    void createNew(@Valid @RequestBody CombinedRequest combinedRequest){
-        try {
-            instructorService.createNew(combinedRequest.userCreateRequest(),combinedRequest.instructorCreateRequest());
-        } catch (Exception e) {
-            log.error("An error occurred: {}", e.getMessage(), e);
-        }
+    public BaseResponse<?> createNew(@Valid @RequestBody CombinedRequest combinedRequest){
+            return BaseResponse.createSuccess()
+                    .setPayload(instructorService.createNew(combinedRequest.userCreateRequest(),combinedRequest.instructorCreateRequest()));
+
     }
 
     @GetMapping
-    Page<InstructorResponse> findlist(@RequestParam(required = false, defaultValue = "0") int page,
+    Page<InstructorResponse> findList(@RequestParam(required = false, defaultValue = "0") int page,
                                       @RequestParam(required = false, defaultValue = "2") int limit){
         return instructorService.findList(page, limit);
+    }
+
+
+    @GetMapping("/{username}")
+    UserResponse findProfile(@PathVariable String username,HttpServletRequest request){
+        return instructorService.findProfileByUsername(username,request);
+    }
+
+    @PutMapping("/{username}")
+    BaseResponse<?> updateProfileImage(@PathVariable String username,
+                                        @Valid @RequestBody InstructorUpdateRequest instructorUpdateRequest,
+                                       HttpServletRequest request) {
+
+        return BaseResponse.updateSuccess()
+                .setPayload(instructorService.updateProfile(username, instructorUpdateRequest.mediaName(),request));
+
     }
 
 

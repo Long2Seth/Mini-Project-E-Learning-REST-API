@@ -36,8 +36,17 @@ public record UserCreateRequest(
     String gender,
 
     @NotNull
-    LocalDate dob
+    LocalDate dob,
 
+    String address1,
+
+    String address2,
+
+    String givenName,
+
+    String familyName,
+
+    String profile
 
 
     ) {

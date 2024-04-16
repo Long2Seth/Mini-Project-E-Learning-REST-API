@@ -8,9 +8,12 @@ import co.istad.elearning.features.instuctor.dto.InstructorResponse;
 import co.istad.elearning.features.user.RoleRepository;
 import co.istad.elearning.features.user.UserRepository;
 import co.istad.elearning.features.user.dto.UserCreateRequest;
+import co.istad.elearning.features.user.dto.UserResponse;
 import co.istad.elearning.mapper.InstructorMapper;
 import co.istad.elearning.mapper.UserMapper;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -19,6 +22,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -33,7 +37,7 @@ public class InstructorServiceImpl implements InstructorService{
     private final UserMapper userMapper;
 
     @Override
-    public void createNew(UserCreateRequest userCreateRequest, InstructorCreateRequest instructorCreateRequest ) {
+    public InstructorResponse createNew(UserCreateRequest userCreateRequest, InstructorCreateRequest instructorCreateRequest ) {
 
         //create new user
         if (userRepository.existsByPhoneNumber(userCreateRequest.phoneNumber())) {
@@ -69,7 +73,8 @@ public class InstructorServiceImpl implements InstructorService{
         user.setUuid(UUID.randomUUID().toString());
         user.setIsDeleted(false);
         user.setIsVerified(true);
-        user.setProfile("avatar.png");
+        //this is default profile picture
+        user.setProfile("097213a0-9838-4bd5-851c-fa55e2fa3ddd.png");
 
         // Assign default user role as USER and INSTRUCTOR
         List<Role> roles = new ArrayList<>();
@@ -100,6 +105,7 @@ public class InstructorServiceImpl implements InstructorService{
 
         instructorRepository.save(instructor);
 
+        return instructorMapper.toInstructorResponse(instructor);
     }
 
     @Override
@@ -110,5 +116,42 @@ public class InstructorServiceImpl implements InstructorService{
         Page<Instructor> instructors = instructorRepository.findAll(pageRequest);
 
         return instructors.map(instructorMapper::toInstructorResponse);
+    }
+
+    private String generateImageUrl(HttpServletRequest request, String filename) {
+        return String.format("%s://%s:%d/images/%s",
+                request.getScheme(),
+                request.getServerName(),
+                request.getServerPort(),
+                filename);
+    }
+
+    @Override
+    public UserResponse findProfileByUsername(String username,HttpServletRequest request) {
+
+        User foundUser = userRepository.findByUsername(username)
+                .orElseThrow(() -> (
+                        new ResponseStatusException(HttpStatus.NOT_FOUND,
+                                "Username has not been found!" )
+                        ));
+
+        String profileImageUrl = generateImageUrl(request, foundUser.getProfile());
+
+        return new UserResponse(foundUser.getUsername(), profileImageUrl);
+    }
+
+
+    @Override
+    public String updateProfile(String username,String mediaName,HttpServletRequest request) {
+        User foundUser = userRepository.findByUsername(username)
+                .orElseThrow(() -> (
+                        new ResponseStatusException(HttpStatus.NOT_FOUND,
+                                "Username has not been found!" )
+                ));
+
+        foundUser.setProfile(mediaName);
+
+        userRepository.save(foundUser);
+        return generateImageUrl(request,mediaName);
     }
 }
