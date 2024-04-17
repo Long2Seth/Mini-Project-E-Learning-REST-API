@@ -18,5 +18,6 @@ public class Student {
     private String university;
 
     //relationship
-        //user_id
+    @ManyToOne
+    private User user;
 }
