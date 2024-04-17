@@ -1,7 +1,10 @@
 package co.istad.elearning.features.category.dto;
 
+import lombok.Builder;
+
+@Builder
 public record CategoryResponse(
-        Integer id,
+        Long id,
         String name,
         String alias,
         String icon,
