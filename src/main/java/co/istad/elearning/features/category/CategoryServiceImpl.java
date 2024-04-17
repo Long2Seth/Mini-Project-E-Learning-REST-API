@@ -7,7 +7,9 @@ import co.istad.elearning.features.category.dto.CategoryRequest;
 import co.istad.elearning.features.category.dto.CategoryResponse;
 import co.istad.elearning.mapper.CategoryMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -24,6 +26,7 @@ public class CategoryServiceImpl implements  CategoryService{
 
     @Override
     public CategoryResponse createCategory(CategoryRequest categoryRequest) {
+
 
         Category newCategory = categoryMapper.requestToCategory(categoryRequest);
         newCategory.setIsDeleted(false);
@@ -42,12 +45,39 @@ public class CategoryServiceImpl implements  CategoryService{
     }
 
     @Override
-    public CategoryResponse updateCategory(Integer id, CategoryRequest categoryRequest) {
-        return null;
+    public CategoryResponse updateCategory(Long id, CategoryRequest categoryRequest) {
+        var category = categoryRepository.findById(id).orElseThrow(
+                () -> new RuntimeException("Category not found with id: " + id));
+        categoryMapper.updateCategoryFromRequest( category , categoryRequest);
+        return categoryMapper.categoryToResponse(categoryRepository.save(category));
     }
 
     @Override
-    public void deleteCategory(Integer id) {
+    public void deleteCategory(Long id) {
+        var deleteId = categoryRepository.findById(id).orElseThrow(
+                () -> new RuntimeException("Category not found with id: " + id));
+        categoryRepository.delete(deleteId);
+    }
 
+    @Override
+    public CategoryResponse enableCategory(Long id) {
+        int row = categoryRepository.updateBlockedStatusById(id, false);
+        if(row > 0 ){
+            return categoryMapper.categoryToResponse(categoryRepository.findById(id).orElse(null));
+        }
+        else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found with id: " + id);
+        }
+    }
+
+    @Override
+    public CategoryResponse disableCategory(Long id) {
+        int row = categoryRepository.updateBlockedStatusById(id, true);
+        if(row > 0 ){
+            return categoryMapper.categoryToResponse(categoryRepository.findById(id).orElse(null));
+        }
+        else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found with id: " + id);
+        }
     }
 }

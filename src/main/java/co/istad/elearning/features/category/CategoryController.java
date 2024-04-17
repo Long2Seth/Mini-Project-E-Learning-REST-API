@@ -19,7 +19,7 @@ public class CategoryController {
 
     private final CategoryService categoryService;
 
-    @GetMapping
+    @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
     public BaseResponse<List<CategoryResponse>> getAllCategories() {
         return BaseResponse.<List<CategoryResponse>>ok()
@@ -34,4 +34,37 @@ public class CategoryController {
                 .setPayload(categoryService.createCategory(categoryRequest));
     }
 
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public BaseResponse<CategoryResponse> getCategoryById(@PathVariable Long id) {
+        return BaseResponse.<CategoryResponse>ok()
+                .setPayload(categoryService.findCategoryById(id));
+    }
+
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public BaseResponse<CategoryResponse> updateCategory(@PathVariable Long id, @RequestBody CategoryRequest categoryRequest) {
+        return BaseResponse.<CategoryResponse>ok()
+                .setPayload(categoryService.updateCategory(id, categoryRequest));
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteCategory(@PathVariable Long id) {
+        categoryService.deleteCategory(id);
+    }
+
+    @PutMapping("/{id}/enable")
+    @ResponseStatus(HttpStatus.OK)
+    public BaseResponse<CategoryResponse> enableCategory(@PathVariable Long id) {
+        return BaseResponse.<CategoryResponse>ok()
+                .setPayload(categoryService.enableCategory(id));
+    }
+
+    @PutMapping("/{id}/disable")
+    @ResponseStatus(HttpStatus.OK)
+    public BaseResponse<CategoryResponse> disableCategory(@PathVariable Long id) {
+        return BaseResponse.<CategoryResponse>ok()
+                .setPayload(categoryService.disableCategory(id));
+    }
 }
