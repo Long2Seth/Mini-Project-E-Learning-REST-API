@@ -1,10 +1,8 @@
 package co.istad.elearning.features.instuctor;
 
 import co.istad.elearning.features.instuctor.dto.CombinedRequest;
-import co.istad.elearning.features.instuctor.dto.InstructorCreateRequest;
 import co.istad.elearning.features.instuctor.dto.InstructorResponse;
 import co.istad.elearning.features.instuctor.dto.InstructorUpdateRequest;
-import co.istad.elearning.features.user.dto.UserCreateRequest;
 import co.istad.elearning.features.user.dto.UserResponse;
 import co.istad.elearning.util.BaseResponse;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,8 +13,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
