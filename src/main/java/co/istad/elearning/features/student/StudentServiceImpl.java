@@ -1,6 +1,5 @@
 package co.istad.elearning.features.student;
 
-import co.istad.elearning.domain.Instructor;
 import co.istad.elearning.domain.Role;
 import co.istad.elearning.domain.Student;
 import co.istad.elearning.domain.User;
@@ -9,9 +8,13 @@ import co.istad.elearning.features.student.dto.StudentResponse;
 import co.istad.elearning.features.user.RoleRepository;
 import co.istad.elearning.features.user.UserRepository;
 import co.istad.elearning.features.user.dto.UserCreateRequest;
+import co.istad.elearning.features.user.dto.UserResponse;
 import co.istad.elearning.mapper.StudentMapper;
 import co.istad.elearning.mapper.UserMapper;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -100,5 +103,58 @@ public class StudentServiceImpl implements StudentService{
         studentRepository.save(student);
 
         return studentMapper.toStudentResponse(student);
+    }
+
+    @Override
+    public Page<StudentResponse> findList(int page, int limit) {
+        PageRequest pageRequest = PageRequest.of(page, limit);
+
+        Page<Student> students = studentRepository.findAll(pageRequest);
+
+        return students.map(studentMapper::toStudentResponse);
+    }
+
+    private String generateImageUrl(HttpServletRequest request, String filename) {
+        return String.format("%s://%s:%d/images/%s",
+                request.getScheme(),
+                request.getServerName(),
+                request.getServerPort(),
+                filename);
+    }
+
+    @Override
+    public UserResponse findProfileByUsername(String username, HttpServletRequest request) {
+
+        Role role = roleRepository.findByName("STUDENT")
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid role name"));
+
+        User foundUser = userRepository.findByUsernameAndRoles(username,role)
+                .orElseThrow(() -> (
+                        new ResponseStatusException(HttpStatus.NOT_FOUND,
+                                "Student's username has not been found!" )
+                ));
+
+        String profileImageUrl = generateImageUrl(request, foundUser.getProfile());
+
+        return new UserResponse(foundUser.getUsername(), profileImageUrl);
+    }
+
+
+    @Override
+    public String updateProfile(String username,String mediaName,HttpServletRequest request) {
+
+        Role role = roleRepository.findByName("STUDENT")
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid role name"));
+
+        User foundUser = userRepository.findByUsernameAndRoles(username,role)
+                .orElseThrow(() -> (
+                        new ResponseStatusException(HttpStatus.NOT_FOUND,
+                                "Student's username has not been found!" )
+                ));
+
+        foundUser.setProfile(mediaName);
+
+        userRepository.save(foundUser);
+        return generateImageUrl(request,mediaName);
     }
 }

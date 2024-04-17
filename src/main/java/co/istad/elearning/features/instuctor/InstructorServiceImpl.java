@@ -129,11 +129,14 @@ public class InstructorServiceImpl implements InstructorService{
     @Override
     public UserResponse findProfileByUsername(String username,HttpServletRequest request) {
 
-        User foundUser = userRepository.findByUsername(username)
+        Role role = roleRepository.findByName("INSTRUCTOR")
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid role name"));
+
+        User foundUser = userRepository.findByUsernameAndRoles(username,role)
                 .orElseThrow(() -> (
                         new ResponseStatusException(HttpStatus.NOT_FOUND,
-                                "Username has not been found!" )
-                        ));
+                                "Instructor's username has not been found!" )
+                ));
 
         String profileImageUrl = generateImageUrl(request, foundUser.getProfile());
 
@@ -143,10 +146,13 @@ public class InstructorServiceImpl implements InstructorService{
 
     @Override
     public String updateProfile(String username,String mediaName,HttpServletRequest request) {
-        User foundUser = userRepository.findByUsername(username)
+        Role role = roleRepository.findByName("INSTRUCTOR")
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid role name"));
+
+        User foundUser = userRepository.findByUsernameAndRoles(username,role)
                 .orElseThrow(() -> (
                         new ResponseStatusException(HttpStatus.NOT_FOUND,
-                                "Username has not been found!" )
+                                "Instructor's username has not been found!" )
                 ));
 
         foundUser.setProfile(mediaName);
