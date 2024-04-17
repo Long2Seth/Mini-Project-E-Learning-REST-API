@@ -3,7 +3,10 @@ package co.istad.elearning.mapper;
 import co.istad.elearning.domain.Category;
 import co.istad.elearning.features.category.dto.CategoryRequest;
 import co.istad.elearning.features.category.dto.CategoryResponse;
+import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
 public interface CategoryMapper {
@@ -13,7 +16,6 @@ public interface CategoryMapper {
             return null;
         }
 
-        // Extract parentId from parentCategory field if it exists
         Integer parentId = (category.getParentCategory() != null) ? Math.toIntExact(category.getParentCategory().getId()) : null;
 
         return new CategoryResponse(
@@ -25,4 +27,9 @@ public interface CategoryMapper {
                 category.getIsDeleted()
         );
     }
+
+
+    @Mapping(target = "id", ignore = true)
+    @BeanMapping(nullValuePropertyMappingStrategy = org.mapstruct.NullValuePropertyMappingStrategy.IGNORE)
+    void updateCategoryFromRequest(@MappingTarget Category category , CategoryRequest request);
 }
