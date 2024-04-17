@@ -16,6 +16,7 @@ import java.util.List;
 public class DataInitializer {
 
     private final RoleRepository roleRepository;
+    private final CategoryRepository categoryRepository;
 
     @PostConstruct
     void initRole() {
@@ -39,8 +40,6 @@ public class DataInitializer {
         }
 
     }
-
-    private final CategoryRepository categoryRepository;
 
 
     @PostConstruct

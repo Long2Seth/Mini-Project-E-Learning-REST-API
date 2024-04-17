@@ -27,7 +27,7 @@ public class CategoryController {
     }
 
 
-    @PutMapping
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public BaseResponse<CategoryResponse> createCategory(@RequestBody CategoryRequest categoryRequest) {
         return BaseResponse.<CategoryResponse>ok()

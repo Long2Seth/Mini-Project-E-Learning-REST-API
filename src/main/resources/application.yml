@@ -4,6 +4,6 @@
 
 spring:
   application:
-    name: "mobile-banking-cstad"
+    name: "ELearning REST API"
   profiles:
     active: dev # configuration dev file
