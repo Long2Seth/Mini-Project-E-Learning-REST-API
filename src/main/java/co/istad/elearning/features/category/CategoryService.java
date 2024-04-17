@@ -9,7 +9,9 @@ public interface CategoryService {
     List<CategoryResponse> getAllCategories();
     CategoryResponse createCategory(CategoryRequest categoryRequest);
     CategoryResponse findCategoryById(Long id);
-    CategoryResponse updateCategory(Integer id, CategoryRequest categoryRequest);
-    void deleteCategory(Integer id);
+    CategoryResponse updateCategory(Long id, CategoryRequest categoryRequest);
+    void deleteCategory(Long id);
+    CategoryResponse enableCategory(Long id);
+    CategoryResponse disableCategory(Long id);
 
 }
