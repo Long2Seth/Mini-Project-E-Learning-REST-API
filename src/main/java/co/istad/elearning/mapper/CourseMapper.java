@@ -8,6 +8,8 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring", uses = {
 })
 public interface CourseMapper {
+
+
 //    @Mapping(source = "", target = "course",
 //            qualifiedByName = "mapCourseResponse")
     CourseResponse toCourseResponse(Course course);
