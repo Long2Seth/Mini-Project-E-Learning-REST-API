@@ -3,6 +3,7 @@ package co.istad.elearning.domain;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -16,6 +17,6 @@ public class Authority {
     private String name;
 
     //relationship
-    @ManyToMany(mappedBy = "authorities")
-    private List<Role> roles;
+//    @ManyToMany(mappedBy = "authorities")
+//    private List<Role> roles  = new ArrayList<>();
 }

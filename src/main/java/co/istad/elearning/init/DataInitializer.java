@@ -1,5 +1,6 @@
 package co.istad.elearning.init;
 
+import co.istad.elearning.domain.Authority;
 import co.istad.elearning.domain.City;
 import co.istad.elearning.domain.Country;
 import co.istad.elearning.domain.Role;
@@ -7,46 +8,49 @@ import co.istad.elearning.features.citycountry.CityRepository;
 import co.istad.elearning.features.citycountry.CountryRepository;
 import co.istad.elearning.features.citycountry.dto.CountryInitInfoResponse;
 import co.istad.elearning.features.citycountry.dto.CountryResponse;
+import co.istad.elearning.features.user.AuthorityRepository;
 import co.istad.elearning.features.user.RoleRepository;
 import jakarta.annotation.PostConstruct;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Component
 @RequiredArgsConstructor
+@Transactional
 public class DataInitializer {
 
     private final RoleRepository roleRepository;
     private final CountryRepository countryRepository;
     private final CityRepository cityRepository;
+    private final AuthorityRepository authorityRepository;
 
 
-    @PostConstruct
-    void initRole() {
-        if (roleRepository.count() < 1) {
-            Role user = new Role();
-            user.setName("USER");
-
-            Role student = new Role();
-            student.setName("STUDENT");
-
-            Role instructor = new Role();
-            instructor.setName("INSTRUCTOR");
-
-            Role admin = new Role();
-            admin.setName("ADMIN");
-
-            roleRepository.saveAll(
-                    List.of(user, student, instructor, admin)
-            );
-        }
-
-    }
+//    @PostConstruct
+//    void initRole() {
+//        if (roleRepository.count() < 1) {
+//            Role user = new Role();
+//            user.setName("USER");
+//
+//            Role student = new Role();
+//            student.setName("STUDENT");
+//
+//            Role instructor = new Role();
+//            instructor.setName("INSTRUCTOR");
+//
+//            Role admin = new Role();
+//            admin.setName("ADMIN");
+//
+//            roleRepository.saveAll(
+//                    List.of(user, student, instructor, admin)
+//            );
+//        }
+//
+//    }
 
     @PostConstruct
     void initData() {
@@ -102,4 +106,42 @@ public class DataInitializer {
 
     }
 
+
+    @PostConstruct
+    public void initAuthority() {
+        if(authorityRepository.count() < 1){
+            List<String> authorities = Arrays.asList("user:read", "user:write", "user:delete", "user:update", "progress:read", "progress:write", "elearning:read", "elearning:write", "elearning:update", "elearning:delete");
+
+            // Create authorities
+            List<Authority> authorityList = new ArrayList<>();
+            for (String authority : authorities) {
+                Authority authorityEntity = new Authority();
+                authorityEntity.setName(authority);
+                authorityList.add(authorityRepository.save(authorityEntity));
+            }
+
+            // Create roles and associate authorities
+            List<String> roles = Arrays.asList("USER", "ADMIN", "STUDENT", "INSTRUCTOR");
+            Map<String, List<String>> roleAuthoritiesMap = new HashMap<>();
+            roleAuthoritiesMap.put("USER", Arrays.asList("user:read", "user:write", "user:update", "progress:read", "elearning:read"));
+            roleAuthoritiesMap.put("ADMIN", Arrays.asList("user:read", "user:write", "user:delete", "user:update", "progress:read", "progress:write", "elearning:read", "elearning:write", "elearning:update", "elearning:delete"));
+            roleAuthoritiesMap.put("STUDENT", Collections.singletonList("progress:write"));
+            roleAuthoritiesMap.put("INSTRUCTOR", Arrays.asList("elearning:write", "elearning:delete", "elearning:update"));
+
+            for (String roleName : roles) {
+                Role role = new Role();
+                role.setName(roleName);
+                List<String> roleAuthorities = roleAuthoritiesMap.get(roleName);
+                for (String authorityName : roleAuthorities) {
+                    Authority authority = authorityList.stream()
+                            .filter(a -> a.getName().equals(authorityName))
+                            .findFirst()
+                            .orElseThrow(() -> new RuntimeException("Authority not found: " + authorityName));
+                    role.getAuthorities().add(authority);
+
+                }
+                roleRepository.save(role);
+            }
+        }
+    }
 }

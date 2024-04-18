@@ -46,7 +46,11 @@ public record UserCreateRequest(
 
     String familyName,
 
-    String profile
+    String profile,
+
+    String countryId,
+
+    String cityId
 
 
     ) {

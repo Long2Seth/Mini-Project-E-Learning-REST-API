@@ -3,6 +3,7 @@ package co.istad.elearning.domain;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -25,6 +26,6 @@ public class Role {
             name = "roles_authorities",
             joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
-    private Collection<Authority> authorities;
+    private Collection<Authority> authorities = new ArrayList<>();
 
 }
