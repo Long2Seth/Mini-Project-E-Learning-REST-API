@@ -4,18 +4,18 @@ server:
 file:
   storage-dir: "filestorage/images/"
   client-dir: "/images/**"
+
 spring:
-  servlet: # this is for file upload
+  servlet:
     multipart:
       max-file-size: 5MB
       max-request-size: 5MB
-
 
   datasource:
     username: postgres
     password: 2002sep24
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/RESTAPI
+    url: jdbc:postgresql://localhost:5432/developer
   jpa:
     show-sql: true
     hibernate:

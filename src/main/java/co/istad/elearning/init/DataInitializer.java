@@ -1,18 +1,45 @@
 package co.istad.elearning.init;
 
 import co.istad.elearning.domain.Category;
+import co.istad.elearning.domain.Role;
 import co.istad.elearning.features.category.CategoryRepository;
+import co.istad.elearning.features.user.RoleRepository;
 import jakarta.annotation.PostConstruct;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class DataInitializer {
 
+    private final RoleRepository roleRepository;
     private final CategoryRepository categoryRepository;
+
+    @PostConstruct
+    void initRole() {
+
+        if (roleRepository.count() < 1) {
+            Role user = new Role();
+            user.setName("USER");
+
+            Role student = new Role();
+            student.setName("STUDENT");
+
+            Role instructor = new Role();
+            instructor.setName("INSTRUCTOR");
+
+            Role admin = new Role();
+            admin.setName("ADMIN");
+
+            roleRepository.saveAll(
+                    List.of(user, student, instructor, admin)
+            );
+        }
+
+    }
 
 
     @PostConstruct

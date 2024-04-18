@@ -1,3 +1,7 @@
+
+#media:
+#  base-uri=${MEDIA_BASE_URI}
+
 spring:
   application:
     name: "ELearning REST API"

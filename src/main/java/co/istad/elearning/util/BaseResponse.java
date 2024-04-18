@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 
 @Accessors(chain = true)
 @Data
-public class BaseResponse <T> {
+public class BaseResponse<T> {
     private T payload;
     private String message;
     private Object metadata;
@@ -16,14 +16,14 @@ public class BaseResponse <T> {
     public static <T> BaseResponse<T> createSuccess() {
         return new BaseResponse<T>()
                 .setStatus(HttpStatus.CREATED.value())
-                .setMessage("Created Successfully!!! ")
-                ;
+                .setMessage("Created Successfully !")
+        ;
     }
     public static <T> BaseResponse<T> ok() {
         return new BaseResponse<T>()
                 .setStatus(HttpStatus.OK.value())
-                .setMessage("Successfully Retrieved the data !!! ")
-                ;
+                .setMessage("Successfully Retrieved the data !")
+        ;
     }
 
     public static <T> BaseResponse<T> notFound(){
@@ -39,7 +39,7 @@ public class BaseResponse <T> {
     public static <T> BaseResponse<T> updateSuccess(){
         return new BaseResponse<T>()
                 .setStatus(HttpStatus.OK.value())
-                .setMessage("Successfully update the entry!");
+                .setMessage("Successfully update the entry !");
     }
 
 
