@@ -9,7 +9,7 @@ import java.time.LocalDate;
 public record EnrollmentDetailResponse(
         Long id,
         LocalDate certifiedAt,
-        Integer code,
+        String code,
         String courseId,
         String enrolledAt,
         boolean isCertified,
