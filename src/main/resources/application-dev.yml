@@ -4,6 +4,7 @@ server:
 file:
   storage-dir: "filestorage/images/"
   client-dir: "/images/**"
+
 spring:
   servlet: # this is for file upload
     multipart:
@@ -19,7 +20,7 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: update # or update
+      ddl-auto: create-drop # or update
     generate-ddl: true
 springdoc:
   swagger-ui:

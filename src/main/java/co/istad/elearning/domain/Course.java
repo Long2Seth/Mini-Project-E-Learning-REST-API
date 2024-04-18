@@ -23,10 +23,4 @@ public class Course {
     private String thumbnail;
 
     private String title;
-
-    //relationship
-
-        //cat_id
-
-        //ins_id
 }

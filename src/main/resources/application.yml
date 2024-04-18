@@ -1,5 +1,5 @@
 spring:
   application:
-    name: "ELeraning"
+    name: "ELearning REST API "
   profiles:
-    active: dev # configuration dev file
+    active: dev
