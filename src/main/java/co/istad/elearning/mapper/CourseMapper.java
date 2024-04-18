@@ -12,6 +12,8 @@ public interface CourseMapper {
 
 //    @Mapping(source = "", target = "course",
 //            qualifiedByName = "mapCourseResponse")
+//    @Mapping( target = "course",
+//            qualifiedByName = "mapCourseResponse")
     CourseResponse toCourseResponse(Course course);
 
 }
