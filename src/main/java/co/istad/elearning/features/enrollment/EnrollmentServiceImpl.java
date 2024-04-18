@@ -75,7 +75,18 @@ public class EnrollmentServiceImpl implements EnrollmentService {
     }
 
     @Override
-    public EnrollmentResponse disableEnrollment(String code) {
-        return null;
+    public EnrollmentDetailResponse disableEnrollment(String code) {
+        int affectedRow = enrollmentRepository.disableByCode(code, true);
+        if (affectedRow > 0) {
+            return enrollmentMapper.responseToEnrollmentResponse(
+                    enrollmentRepository.findByCode(Integer.valueOf(code)).orElse(null)
+            );
+        } else {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "User with code: <" + code + "> not found!"
+            );
+
+        }
     }
 }

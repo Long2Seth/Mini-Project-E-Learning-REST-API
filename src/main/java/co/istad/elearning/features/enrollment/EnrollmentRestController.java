@@ -3,7 +3,6 @@ package co.istad.elearning.features.enrollment;
 
 import co.istad.elearning.features.enrollment.dto.EnrollmentDetailResponse;
 import co.istad.elearning.features.enrollment.dto.EnrollmentRequest;
-import co.istad.elearning.features.enrollment.dto.EnrollmentResponse;
 import co.istad.elearning.util.BaseResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -39,9 +38,11 @@ public class EnrollmentRestController {
                 .setPayload(enrollmentService.getEnrollmentByCode(code));
     }
 
-    @PutMapping
+    @PutMapping("/{code}")
     @Operation(summary = "Disable enrollment by code")
-    public BaseResponse<EnrollmentResponse> disableEnrollment(@RequestBody EnrollmentResponse enrollmentResponse) {
-        return null;
+    public BaseResponse<Object> disableEnrollment(@PathVariable String code) {
+        return BaseResponse
+                .disableSuccess()
+                .setPayload(enrollmentService.disableEnrollment(code));
     }
 }
