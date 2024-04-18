@@ -75,7 +75,7 @@ public class EnrollmentServiceImpl implements EnrollmentService {
     }
 
     @Override
-    public EnrollmentResponse disableEnrollment(Integer code) {
+    public EnrollmentResponse disableEnrollment(String code) {
         return null;
     }
 }

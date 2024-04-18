@@ -11,5 +11,5 @@ public interface EnrollmentService {
     List<EnrollmentDetailResponse> getEnrollments();
     EnrollmentDetailResponse getEnrollmentByCode(String code);
     EnrollmentResponse updateEnrollment(EnrollmentRequest enrollmentRequest);
-    EnrollmentResponse disableEnrollment(Integer code);
+    EnrollmentResponse disableEnrollment(String code);
 }
