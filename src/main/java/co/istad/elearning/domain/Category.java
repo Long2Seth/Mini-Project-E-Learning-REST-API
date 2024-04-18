@@ -36,5 +36,4 @@ public class Category {
 
     @OneToMany(mappedBy = "parentCategory", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Category> subCategories;
-
 }

@@ -9,5 +9,5 @@ public record CategoryRequest(
         String icon,
         Boolean isDeleted,
         String name,
-        Integer parentCategoryId
+        Long parentCategoryId
 ) {}
