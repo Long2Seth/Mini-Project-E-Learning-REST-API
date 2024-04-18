@@ -2,6 +2,8 @@ package co.istad.elearning.domain;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.List;
+
 @Entity
 @Table(name = "countries")
 @Data
@@ -10,6 +12,7 @@ public class Country {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(length = 500)
     private String flag;
 
     @Column(length = 10,nullable = false)
@@ -20,11 +23,12 @@ public class Country {
 
     private String niceName;
 
-    @Column(nullable = false)
-    private Integer numCode;
+    private String numCode;
 
-    @Column(nullable = false)
-    private Integer phoneCode;
+    private String phoneCode;
 
     //relationship
+    @OneToMany(mappedBy = "country", cascade = CascadeType.ALL)
+    private List<City> cities;
+
 }

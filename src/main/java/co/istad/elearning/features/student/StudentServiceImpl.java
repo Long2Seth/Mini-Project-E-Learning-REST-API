@@ -8,6 +8,7 @@ import co.istad.elearning.features.student.dto.StudentResponse;
 import co.istad.elearning.features.user.RoleRepository;
 import co.istad.elearning.features.user.UserRepository;
 import co.istad.elearning.features.user.dto.UserCreateRequest;
+import co.istad.elearning.features.user.dto.UserDetailResponse;
 import co.istad.elearning.features.user.dto.UserResponse;
 import co.istad.elearning.mapper.StudentMapper;
 import co.istad.elearning.mapper.UserMapper;
@@ -157,4 +158,6 @@ public class StudentServiceImpl implements StudentService{
         userRepository.save(foundUser);
         return generateImageUrl(request,mediaName);
     }
+
+
 }
