@@ -2,6 +2,8 @@ package co.istad.elearning.domain;
 
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -17,4 +19,12 @@ public class Role {
     //relationship
     @ManyToMany(mappedBy = "roles")
     private List<User> users;
+
+    @ManyToMany
+    @JoinTable(
+            name = "roles_authorities",
+            joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
+    private Collection<Authority> authorities;
+
 }
