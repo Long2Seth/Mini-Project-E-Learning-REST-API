@@ -43,7 +43,7 @@ public class CourseRestController {
     }
 
 
-    @PutMapping("{alias}")
+    @PutMapping("/{alias}")
     @Operation(summary = "Update a course")
     @ResponseStatus(HttpStatus.OK)
     public BasedMessage updateCourseByAlias(@PathVariable("alias") String alias,
@@ -67,7 +67,7 @@ public class CourseRestController {
         return courseService.updateCourseCategory(alias, courseCategoryRequest);
     }
 
-    @PutMapping("{alias}/disable")
+    @PutMapping("/{alias}/disable")
     @Operation(summary = "Update a course’s categories")
     @ResponseStatus(HttpStatus.OK)
     public void disableCourseByAlias(@PathVariable("alias") String alias){
