@@ -1,8 +1,8 @@
 package co.istad.elearning.features.student;
 
-import co.istad.elearning.domain.Role;
-import co.istad.elearning.domain.Student;
-import co.istad.elearning.domain.User;
+import co.istad.elearning.domain.*;
+import co.istad.elearning.features.citycountry.CityRepository;
+import co.istad.elearning.features.citycountry.CountryRepository;
 import co.istad.elearning.features.student.dto.StudentCreateRequest;
 import co.istad.elearning.features.student.dto.StudentResponse;
 import co.istad.elearning.features.user.RoleRepository;
@@ -31,7 +31,8 @@ public class StudentServiceImpl implements StudentService{
     private final StudentRepository studentRepository;
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-
+    private final CityRepository cityRepository;
+    private final CountryRepository countryRepositor;
     private final UserMapper userMapper;
     private final StudentMapper studentMapper;
 
@@ -71,6 +72,14 @@ public class StudentServiceImpl implements StudentService{
         user.setUuid(UUID.randomUUID().toString());
         user.setIsDeleted(false);
         user.setIsVerified(true);
+
+        City city = cityRepository.findById(userCreateRequest.cityId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "City not found with id " + userCreateRequest.cityId()));
+        Country country = countryRepositor.findById(userCreateRequest.countryId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Country not found with id " + userCreateRequest.countryId()));
+        user.setCountry(country);
+        user.setCity(city);
+
         //this is default profile picture
         user.setProfile("097213a0-9838-4bd5-851c-fa55e2fa3ddd.png");
 

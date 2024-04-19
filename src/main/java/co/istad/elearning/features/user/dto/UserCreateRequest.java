@@ -51,9 +51,9 @@ public record UserCreateRequest(
 
     String profile,
 
-    String countryId,
+    Integer countryId,
 
-    String cityId
+    Integer cityId
 
 
     ) {
