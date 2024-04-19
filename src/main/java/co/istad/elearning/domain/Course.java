@@ -23,12 +23,11 @@ public class Course {
     @JoinColumn(name = "cat_id")
     private Category category;
 
-    @Column(columnDefinition = "TEXT")
-    private String description;
-
     @ManyToOne
     @JoinColumn(name = "ins_id")
     private Instructor instructor;
+    @Column(columnDefinition = "TEXT")
+    private String description;
 
     private Boolean isDeleted;
 

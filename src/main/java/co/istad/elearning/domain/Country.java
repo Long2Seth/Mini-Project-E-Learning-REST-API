@@ -23,9 +23,11 @@ public class Country {
 
     private String niceName;
 
-    private String numCode;
+    @Column(nullable = false)
+    private Integer numCode;
 
-    private String phoneCode;
+    @Column(nullable = false)
+    private Integer phoneCode;
 
     //relationship
     @OneToMany(mappedBy = "country", cascade = CascadeType.ALL)

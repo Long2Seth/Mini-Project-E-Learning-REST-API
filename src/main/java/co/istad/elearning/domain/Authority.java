@@ -16,7 +16,4 @@ public class Authority {
 
     private String name;
 
-    //relationship
-//    @ManyToMany(mappedBy = "authorities")
-//    private List<Role> roles  = new ArrayList<>();
 }
