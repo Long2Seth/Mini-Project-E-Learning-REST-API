@@ -2,10 +2,12 @@ package co.istad.elearning.domain;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 @Entity
 @Table(name = "courses")
 @Data
+@Accessors(chain = true)
 public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,4 +25,10 @@ public class Course {
     private String thumbnail;
 
     private String title;
+
+    @ManyToOne
+    private Category category;
+
+    @ManyToOne
+    private Instructor instructor;
 }

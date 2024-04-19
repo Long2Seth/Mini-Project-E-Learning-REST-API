@@ -31,31 +31,31 @@ public class UserController {
                 .setPayload(userService.findRoleByRoleName(name));
     }
 
-    @GetMapping
+    @GetMapping("/users")
     public BaseResponse<List<UserGetResponse>> getAllUsers() {
         return BaseResponse.<List<UserGetResponse>>ok()
                 .setPayload(userService.getAllUsers());
     }
 
-    @GetMapping("users/{username}")
+    @GetMapping("/users/{username}")
     public BaseResponse<UserGetResponse> findUserByUsername(@PathVariable String username) {
         return BaseResponse.<UserGetResponse>ok()
                 .setPayload(userService.findUserByUsername(username));
     }
 
-    @DeleteMapping("users/{username}")
+    @DeleteMapping("/users/{username}")
     public BaseResponse<UserGetResponse> deleteUser(@PathVariable String username) {
         userService.deleteUser(username);
         return BaseResponse.<UserGetResponse>ok();
     }
 
-    @PutMapping("users/{username}/disable")
+    @PutMapping("/users/{username}/disable")
     public BaseResponse<UserGetResponse> disableUser(@PathVariable String username) {
         return BaseResponse.<UserGetResponse>ok()
                 .setPayload(userService.disableUser(username));
     }
 
-    @PutMapping("users/{username}/enable")
+    @PutMapping("/users/{username}/enable")
     public BaseResponse<UserGetResponse> enableUser(@PathVariable String username) {
         return BaseResponse.<UserGetResponse>ok()
                 .setPayload(userService.enableUser(username));
