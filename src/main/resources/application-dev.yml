@@ -16,6 +16,7 @@ spring:
     password: 2002sep24
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/ELearning
+
   jpa:
     show-sql: true
     hibernate:
