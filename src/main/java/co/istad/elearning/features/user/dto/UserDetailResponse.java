@@ -10,7 +10,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 
-@Builder
 public record UserDetailResponse(
 
          String uuid,

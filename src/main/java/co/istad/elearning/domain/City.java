@@ -13,7 +13,7 @@ public class City {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(length = 60,nullable = false)
+    @Column(nullable = false)
     private String name;
 
     //relationship
@@ -22,5 +22,8 @@ public class City {
     private List<User> users;
 
     //country_id
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "country_id")
+    private Country country;
 
 }

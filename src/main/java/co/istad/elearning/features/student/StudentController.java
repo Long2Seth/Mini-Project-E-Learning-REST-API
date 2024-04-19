@@ -1,7 +1,5 @@
 package co.istad.elearning.features.student;
 
-import co.istad.elearning.features.instuctor.dto.InstructorResponse;
-import co.istad.elearning.features.instuctor.dto.InstructorUpdateRequest;
 import co.istad.elearning.features.student.dto.CombinedRequest;
 import co.istad.elearning.features.student.dto.StudentResponse;
 import co.istad.elearning.features.student.dto.StudentUpdateResquest;
@@ -14,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequiredArgsConstructor

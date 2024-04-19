@@ -2,6 +2,7 @@ package co.istad.elearning.domain;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
@@ -10,6 +11,7 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 @Data
+@Accessors(chain = true)
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
