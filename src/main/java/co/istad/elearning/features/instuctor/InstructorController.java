@@ -24,35 +24,32 @@ public class InstructorController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public BaseResponse<?> createNew(@Valid @RequestBody CombinedRequest combinedRequest){
-            return BaseResponse.createSuccess()
-                    .setPayload(instructorService.createNew(combinedRequest.userCreateRequest(),combinedRequest.instructorCreateRequest()));
+    public BaseResponse<?> createNew(@Valid @RequestBody CombinedRequest combinedRequest) {
+        return BaseResponse.createSuccess()
+                .setPayload(instructorService.createNew(combinedRequest.userCreateRequest(), combinedRequest.instructorCreateRequest()));
 
     }
 
     @GetMapping
     Page<InstructorResponse> findList(@RequestParam(required = false, defaultValue = "0") int page,
-                                      @RequestParam(required = false, defaultValue = "2") int limit){
+                                      @RequestParam(required = false, defaultValue = "2") int limit) {
         return instructorService.findList(page, limit);
     }
 
 
     @GetMapping("/{username}")
-    UserResponse findProfile(@PathVariable String username,HttpServletRequest request){
-        return instructorService.findProfileByUsername(username,request);
+    UserResponse findProfile(@PathVariable String username, HttpServletRequest request) {
+        return instructorService.findProfileByUsername(username, request);
     }
 
     @PutMapping("/{username}")
     BaseResponse<?> updateProfileImage(@PathVariable String username,
-                                        @Valid @RequestBody InstructorUpdateRequest instructorUpdateRequest,
+                                       @Valid @RequestBody InstructorUpdateRequest instructorUpdateRequest,
                                        HttpServletRequest request) {
 
         return BaseResponse.updateSuccess()
-                .setPayload(instructorService.updateProfile(username, instructorUpdateRequest.mediaName(),request));
+                .setPayload(instructorService.updateProfile(username, instructorUpdateRequest.mediaName(), request));
 
     }
-
-
-
 
 }
