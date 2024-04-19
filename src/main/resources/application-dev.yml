@@ -15,7 +15,7 @@ spring:
     username: postgres
     password: 2002sep24
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/developer
+    url: jdbc:postgresql://localhost:5432/RESTAPI
   jpa:
     show-sql: true
     hibernate:

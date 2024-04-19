@@ -4,10 +4,7 @@ import co.istad.elearning.domain.Category;
 import co.istad.elearning.features.category.dto.CategoryParentResponse;
 import co.istad.elearning.features.category.dto.CategoryRequest;
 import co.istad.elearning.features.category.dto.CategoryResponse;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.Named;
+import org.mapstruct.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,8 +20,6 @@ public interface CategoryMapper {
         if (parentCategory == null) {
             return null;
         }
-
-        // Map the parent category to CategoryParentResponse
         return List.of(CategoryParentResponse.builder()
                 .name(parentCategory.getName())
                 .alias(parentCategory.getAlias())
@@ -35,5 +30,7 @@ public interface CategoryMapper {
 
     Category requestToCategory(CategoryRequest request);
 
+    @Mapping(target = "id", ignore = true)
+    @BeanMapping(nullValuePropertyMappingStrategy = org.mapstruct.NullValuePropertyMappingStrategy.IGNORE)
     void updateCategoryFromRequest(@MappingTarget Category category, CategoryRequest request);
 }

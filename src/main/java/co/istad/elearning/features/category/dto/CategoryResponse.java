@@ -10,7 +10,7 @@ public record CategoryResponse(
         String name,
         String alias,
         String icon,
-        Integer parentCategoryId,
+        Long parentId,
         Boolean isDeleted,
         List<CategoryParentResponse> parent
 ) {

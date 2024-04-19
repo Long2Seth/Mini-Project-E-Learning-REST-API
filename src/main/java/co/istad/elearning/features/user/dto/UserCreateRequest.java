@@ -4,10 +4,13 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Builder;
 
 import java.time.LocalDate;
 import java.util.List;
 
+
+@Builder
 public record UserCreateRequest(
 
     @NotBlank(message = "Email is required")
@@ -46,7 +49,11 @@ public record UserCreateRequest(
 
     String familyName,
 
-    String profile
+    String profile,
+
+    String countryId,
+
+    String cityId
 
 
     ) {
