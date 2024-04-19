@@ -12,11 +12,24 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/v1/users")
+@RequestMapping("/api/v1/")
 @Slf4j
 public class UserController {
 
     private final UserService userService;
+
+    @GetMapping("/roles")
+    public BaseResponse<?> findAllRoles() {
+        return BaseResponse.ok()
+                .setPayload(userService.findAllRoles());
+    }
+
+
+    @GetMapping("/roles/{name}")
+    public BaseResponse<?> findRoleByName(@PathVariable String name) {
+        return BaseResponse.ok()
+                .setPayload(userService.findRoleByRoleName(name));
+    }
 
     @GetMapping
     public BaseResponse<List<UserGetResponse>> getAllUsers() {
@@ -24,25 +37,25 @@ public class UserController {
                 .setPayload(userService.getAllUsers());
     }
 
-    @GetMapping("/{username}")
+    @GetMapping("users/{username}")
     public BaseResponse<UserGetResponse> findUserByUsername(@PathVariable String username) {
         return BaseResponse.<UserGetResponse>ok()
                 .setPayload(userService.findUserByUsername(username));
     }
 
-    @DeleteMapping("/{username}")
+    @DeleteMapping("users/{username}")
     public BaseResponse<UserGetResponse> deleteUser(@PathVariable String username) {
         userService.deleteUser(username);
         return BaseResponse.<UserGetResponse>ok();
     }
 
-    @PutMapping("/{username}/disable")
+    @PutMapping("users/{username}/disable")
     public BaseResponse<UserGetResponse> disableUser(@PathVariable String username) {
         return BaseResponse.<UserGetResponse>ok()
                 .setPayload(userService.disableUser(username));
     }
 
-    @PutMapping("/{username}/enable")
+    @PutMapping("users/{username}/enable")
     public BaseResponse<UserGetResponse> enableUser(@PathVariable String username) {
         return BaseResponse.<UserGetResponse>ok()
                 .setPayload(userService.enableUser(username));

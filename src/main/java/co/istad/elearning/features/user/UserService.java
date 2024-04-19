@@ -1,6 +1,7 @@
 package co.istad.elearning.features.user;
 
 import co.istad.elearning.features.user.dto.UserGetResponse;
+import co.istad.elearning.features.user.dto.RoleAuthorityResponse;
 
 import java.util.List;
 
@@ -13,4 +14,7 @@ public interface UserService {
     UserGetResponse disableUser(String username);
     UserGetResponse enableUser(String username);
 
+    List<RoleAuthorityResponse> findAllRoles();
+
+    RoleAuthorityResponse findRoleByRoleName(String role);
 }

@@ -133,12 +133,13 @@ public class DataInitializer {
                             .findFirst()
                             .orElseThrow(() -> new RuntimeException("Authority not found: " + authorityName));
                     role.getAuthorities().add(authority);
-                    authority.getRoles().add(role); // Ensure both sides of the relationship are managed
+
                 }
                 roleRepository.save(role);
             }
         }
     }
+
 
 
 
