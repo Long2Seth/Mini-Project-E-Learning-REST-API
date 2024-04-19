@@ -2,6 +2,8 @@ package co.istad.elearning.domain;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.List;
+
 @Entity
 @Table(name = "countries")
 @Data
@@ -27,4 +29,7 @@ public class Country {
     private Integer phoneCode;
 
     //relationship
+
+    @OneToMany(mappedBy = "country")
+    private List<City> cities;
 }

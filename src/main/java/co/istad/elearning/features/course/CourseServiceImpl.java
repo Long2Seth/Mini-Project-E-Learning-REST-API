@@ -3,6 +3,7 @@ package co.istad.elearning.features.course;
 import co.istad.elearning.base.BasedMessage;
 import co.istad.elearning.domain.Category;
 import co.istad.elearning.domain.Course;
+import co.istad.elearning.features.category.CategoryRepository;
 import co.istad.elearning.features.course.dto.*;
 import co.istad.elearning.features.instuctor.InstructorRepository;
 import co.istad.elearning.mapper.CourseMapper;
@@ -22,6 +23,7 @@ public class CourseServiceImpl implements CourseService {
     private final CourseMapper courseMapper;
     private final CategoryRepository categoryRepository;
     private final InstructorRepository instructorRepository;
+
     @Override
     public Page<CourseResponse> getCourses(int page, int size) {
         PageRequest pageRequest = PageRequest.of(page, size);
@@ -37,10 +39,10 @@ public class CourseServiceImpl implements CourseService {
                     "Alias are already existing in our system..!"
             );
         }
-        if (!categoryRepository.existsById(Math.toIntExact(courseCreateRequest.categoryId().getId()))){
+        if (!categoryRepository.existsById((long) Math.toIntExact(courseCreateRequest.categoryId().getId()))) {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND,
-                    "The Category ID ("+courseCreateRequest.categoryId().getId()+") don't have in our system...!"
+                    "The Category ID (" + courseCreateRequest.categoryId().getId() + ") don't have in our system...!"
             );
         }
         if (!instructorRepository.existsById(courseCreateRequest.instructorId().getId())) {
@@ -102,7 +104,7 @@ public class CourseServiceImpl implements CourseService {
             );
         }
 
-        Long categoryId = Long.parseLong(courseCategoryRequest.category().getId()+"");
+        Long categoryId = Long.parseLong(courseCategoryRequest.category().getId() + "");
         Category category = categoryRepository.findById(Math.toIntExact(categoryId))
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "Category not found...!"
@@ -133,6 +135,4 @@ public class CourseServiceImpl implements CourseService {
         courseRepository.enableCourse(alias);
         return new BasedMessage("Course has been enabled....!");
     }
-}
-
 }
