@@ -37,8 +37,18 @@ public class DataInitializer {
     private final AuthorityRepository authorityRepository;
     private final UserRepository userRepository;
 
-
     @PostConstruct
+    void initMethod(){
+        initRole();
+        initCategory();
+        initData();
+        initUser();
+        initEnrollment();
+
+    }
+
+
+//    @PostConstruct
     void initRole() {
 
         if (roleRepository.count() < 1) {
@@ -61,7 +71,7 @@ public class DataInitializer {
 
     }
 
-    @PostConstruct
+//    @PostConstruct
     public void init() {
         List<String> authorities = Arrays.asList("user:read", "user:write", "user:delete", "user:update", "progress:read", "progress:write", "elearning:read", "elearning:write", "elearning:update", "elearning:delete");
 
@@ -102,7 +112,7 @@ public class DataInitializer {
     }
 
 
-    @PostConstruct
+//    @PostConstruct
     public void initAuthority() {
         if(authorityRepository.count() < 1){
             List<String> authorities = Arrays.asList("user:read", "user:write", "user:delete", "user:update", "progress:read", "progress:write", "elearning:read", "elearning:write", "elearning:update", "elearning:delete");
@@ -143,7 +153,7 @@ public class DataInitializer {
 
 
 
-    @PostConstruct
+//    @PostConstruct
     void initCategory() {
         List<Category> categories = new ArrayList<>();
         categories.add(new Category()
@@ -167,7 +177,7 @@ public class DataInitializer {
         categoryRepository.saveAll(categories);
     }
 
-    @PostConstruct
+//    @PostConstruct
     void initData() {
         if(countryRepository.count() < 5){
             RestTemplate restTemplate = new RestTemplate();
@@ -183,6 +193,8 @@ public class DataInitializer {
                     Country country = new Country();
                     country.setName(countryResponse.getCountry());
                     country.setIso(countryResponse.getIso3());
+                    country.setNumCode(0);
+                    country.setPhoneCode(0);
 
                     Country savedCountry = countryRepository.save(country);
 
@@ -209,8 +221,8 @@ public class DataInitializer {
                         Country country = countryOptional.get();
                         country.setFlag(countryInfoResponse.getFlag());
                         country.setNiceName(countryInfoResponse.getName());
-                        country.setNumCode(countryInfoResponse.getDialCode());
-                        country.setPhoneCode(countryInfoResponse.getDialCode());
+                        country.setNumCode(Integer.parseInt( countryInfoResponse.getDialCode()));
+                        country.setPhoneCode(Integer.parseInt( countryInfoResponse.getDialCode()));
                         countryRepository.save(country);
                     }
                 }
@@ -221,7 +233,7 @@ public class DataInitializer {
 
     }
 
-    @PostConstruct
+//    @PostConstruct
     void initUser() {
         List<User> users = new ArrayList<>(){
             {
@@ -280,7 +292,7 @@ public class DataInitializer {
 
 
 
-    @PostConstruct
+//    @PostConstruct
     void initEnrollment(){
         createEnrollmentIfStudentExists("student1", 1L, 1L);
         createEnrollmentIfStudentExists("student2", 2L, 2L);

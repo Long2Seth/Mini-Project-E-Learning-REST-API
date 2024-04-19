@@ -30,11 +30,15 @@ public class Category {
     @Column(length = 60, nullable = false)
     private String name;
 
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "parent_category_id")
+//    @JsonIgnore
+//    private Category parentCategory;
+//    private Integer parentCategoryId;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_category_id")
-    @JsonIgnore
     private Category parentCategory;
-    private Integer parentCategoryId;
 
     @OneToMany(mappedBy = "category")
     private List<Course> courses;
