@@ -5,9 +5,9 @@ import lombok.Builder;
 
 @Builder
 public record CategoryRequest(
+        String name,
         String alias,
         String icon,
         Boolean isDeleted,
-        String name,
         Integer parentCategoryId
 ) {}
