@@ -11,7 +11,7 @@ import java.time.LocalDate;
 public class Enrollment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     private LocalDate certifiedAt;
 
@@ -26,8 +26,13 @@ public class Enrollment {
 
     private Integer progress;
 
-    //relationship
-        //student_id
+    @ManyToOne
+    @JoinColumn(name = "course_id")
+    private Course course;
+
+    @ManyToOne
+    @JoinColumn(name = "id", insertable = false, updatable = false)
+    private Student student;
 
 
 }

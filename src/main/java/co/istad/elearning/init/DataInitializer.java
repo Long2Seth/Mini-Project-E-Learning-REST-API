@@ -7,6 +7,9 @@ import co.istad.elearning.features.citycountry.CountryRepository;
 import co.istad.elearning.features.citycountry.dto.CountryInitInfoResponse;
 import co.istad.elearning.features.citycountry.dto.CountryResponse;
 import co.istad.elearning.features.user.AuthorityRepository;
+import co.istad.elearning.features.enrollment.EnrollmentService;
+import co.istad.elearning.features.enrollment.dto.EnrollmentRequest;
+import co.istad.elearning.features.student.StudentRepository;
 import co.istad.elearning.features.user.RoleRepository;
 import co.istad.elearning.features.user.UserRepository;
 import jakarta.annotation.PostConstruct;
@@ -15,6 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -24,6 +30,8 @@ public class DataInitializer {
 
     private final RoleRepository roleRepository;
     private final CategoryRepository categoryRepository;
+    private final EnrollmentService enrollmentService;
+    private final StudentRepository studentRepository;
     private final CountryRepository countryRepository;
     private final CityRepository cityRepository;
     private final AuthorityRepository authorityRepository;
@@ -270,4 +278,22 @@ public class DataInitializer {
     }
 
 
+
+    @PostConstruct
+    void initEnrollment(){
+        createEnrollmentIfStudentExists("student1", 1L, 1L);
+        createEnrollmentIfStudentExists("student2", 2L, 2L);
+        createEnrollmentIfStudentExists("student3", 3L, 3L);
+    }
+
+    private void createEnrollmentIfStudentExists(String code, Long courseId, Long studentId) {
+        Optional<Student> studentOptional = studentRepository.findById(Math.toIntExact(studentId));
+        if (studentOptional.isPresent()) {
+            EnrollmentRequest enrollmentRequest = new EnrollmentRequest(code, courseId, studentId);
+            enrollmentService.createEnrollment(enrollmentRequest);
+        } else {
+            // handle the case where the student does not exist
+            System.out.println("Student with ID: " + studentId + " does not exist!");
+        }
+    }
 }
