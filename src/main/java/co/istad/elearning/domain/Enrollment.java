@@ -12,18 +12,12 @@ public class Enrollment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private LocalDate certifiedAt;
-
     @Column(nullable = false)
-    private Integer code;
-
+    private String code;
     private LocalDate enrolledAt;
-
     private Boolean isCertified;
-
     private Boolean isDeleted;
-
     private Integer progress;
 
     @ManyToOne

@@ -3,8 +3,9 @@ package co.istad.elearning.features.enrollment;
 
 import co.istad.elearning.features.course.CourseRepository;
 import co.istad.elearning.features.enrollment.dto.EnrollmentDetailResponse;
+import co.istad.elearning.features.enrollment.dto.EnrollmentProgressRequest;
+import co.istad.elearning.features.enrollment.dto.EnrollmentProgressResponse;
 import co.istad.elearning.features.enrollment.dto.EnrollmentRequest;
-import co.istad.elearning.features.enrollment.dto.EnrollmentResponse;
 import co.istad.elearning.features.student.StudentRepository;
 import co.istad.elearning.mapper.EnrollmentMapper;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +32,7 @@ public class EnrollmentServiceImpl implements EnrollmentService {
                         "Student with ID: <" + enrollmentRequest.studentId() + "> " + "does not exist!"
                 ));
 
-        var course = courseRepository.findById(Long.valueOf(enrollmentRequest.courseId())).orElseThrow(
+        var course = courseRepository.findById(enrollmentRequest.courseId()).orElseThrow(
                 () -> new ResponseStatusException(
                         HttpStatus.BAD_REQUEST,
                         "Course with ID: <" + enrollmentRequest.courseId() + "> " + "does not exist!"
@@ -42,10 +43,7 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         enrollment.setStudent(student);
 
         enrollmentRepository.save(enrollment);
-        var enrollmentResponse = enrollmentMapper.responseToEnrollmentResponse(enrollment);
-        return enrollmentResponse;
-
-
+        return enrollmentMapper.responseToEnrollmentResponse(enrollment);
     }
 
     @Override
@@ -58,7 +56,7 @@ public class EnrollmentServiceImpl implements EnrollmentService {
 
     @Override
     public EnrollmentDetailResponse getEnrollmentByCode(String code) {
-        var enrollment = enrollmentRepository.findByCode(Integer.valueOf(code))
+        var enrollment = enrollmentRepository.findByCode(code)
                 .orElseThrow(
                         () -> new ResponseStatusException(
                                 HttpStatus.BAD_REQUEST,
@@ -70,16 +68,59 @@ public class EnrollmentServiceImpl implements EnrollmentService {
     }
 
     @Override
-    public EnrollmentResponse updateEnrollment(EnrollmentRequest enrollmentRequest) {
+    public EnrollmentProgressResponse updateEnrollmentProgress(
+            String code,
+            EnrollmentProgressRequest enrollmentProgressRequest
+    ) {
+        var enrollment = enrollmentRepository.findByCode(code)
+                .orElseThrow(
+                        () -> new ResponseStatusException(
+                                HttpStatus.BAD_REQUEST,
+                                "Enrollment with code: <" + code + "> " + "does not exist!"
+                        )
+                );
+
+        enrollment.setProgress(enrollmentProgressRequest.progress());
+        enrollmentRepository.save(enrollment);
+
+        return enrollmentMapper.responseToEnrollmentProgress(enrollment);
+    }
+
+    @Override
+    public EnrollmentDetailResponse getEnrollmentProgress(String code) {
         return null;
     }
+
+    @Override
+    public EnrollmentDetailResponse certifyEnrollment(String code) {
+        //Certify an enrollment when progress 100
+        var enrollment = enrollmentRepository.findByCode(code)
+                .orElseThrow(
+                        () -> new ResponseStatusException(
+                                HttpStatus.BAD_REQUEST,
+                                "Enrollment with code: <" + code + "> " + "does not exist!"
+                        )
+                );
+        if (enrollment.getProgress() >= 100) {
+            enrollment.setIsCertified(true);
+            enrollmentRepository.save(enrollment);
+            return enrollmentMapper.responseToEnrollmentResponse(enrollment);
+        } else {
+            enrollment.setIsCertified(false);
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Enrollment with code: <" + code + "> " + "is not completed yet!"
+            );
+        }
+    }
+
 
     @Override
     public EnrollmentDetailResponse disableEnrollment(String code) {
         int affectedRow = enrollmentRepository.disableByCode(code, true);
         if (affectedRow > 0) {
             return enrollmentMapper.responseToEnrollmentResponse(
-                    enrollmentRepository.findByCode(Integer.valueOf(code)).orElse(null)
+                    enrollmentRepository.findByCode(code).orElse(null)
             );
         } else {
             throw new ResponseStatusException(

@@ -34,7 +34,7 @@ public class Category {
     @JoinColumn(name = "parent_category_id")
     @JsonIgnore
     private Category parentCategory;
-    private Integer parentCategoryId;
+//    private Integer parentCategoryId;
 
     @OneToMany(mappedBy = "category")
     private List<Course> courses;
