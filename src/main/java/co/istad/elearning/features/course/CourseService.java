@@ -1,19 +1,22 @@
 package co.istad.elearning.features.course;
 
+import co.istad.elearning.base.BasedMessage;
 import co.istad.elearning.features.course.dto.*;
 import org.springframework.data.domain.Page;
 
 public interface CourseService {
-    Page<CourseResponse> findList(int page, int size);
+    Page<CourseResponse> getCourses(int page, int size);
 
-    void createNew(CourseCreateRequest courseCreateRequest);
+    BasedMessage createCourse(CourseCreateRequest courseCreateRequest);
 
     CourseDetailsResponse findByAlias(String alias);
 
-    CourseResponse updateCourseByAlias(String alias, CourseUpdateRequest courseUpdateRequest);
 
-    CourseResponse updateCourseThumbnailByAlias(String alias, CourseThumbnailRequest courseThumbnailRequest);
+     BasedMessage updateThumbnail(CourseThumbnailRequest coursethumbnailRequest, String alias);
 
-    CourseResponse updateCourseCategoryByAlias(String alias, CourseCategoryRequest courseCategoryRequest);
-    void disableCourseByAlias(String alias);
+    BasedMessage updateCourseByAlias(String alias, CourseUpdateRequest courseUpdateRequest);
+    BasedMessage updateCourseCategory(String alias,CourseCategoryRequest courseCategoryRequest);
+    BasedMessage disableCourse(String alias);
+
+    BasedMessage enableCourse(String alias);
 }
